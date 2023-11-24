@@ -1,0 +1,28 @@
+#navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 44px;
+    background: black;
+}
+
+#navbar .wrap {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    width: 100%;
+    max-width: var(--max-width);
+    color: var(--col-gray2);
+    font-size: 12px;
+}
+
+.signin_Box{
+    position: absolute;
+    font-size: 24px;
+    border-radius: 20px;
+}
+
+#content {
+    margin-top: 5%;
+}
