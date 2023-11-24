@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>커피전문점</title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <link rel='stylesheet' href='/stylesheets/detail.css' />
+    </head>
+    <body>
+        <div id="navbar">
+            <div class="wrap">
+                <div class="item_logo"></div>
+                <div class="item">
+                    <a href="/"><font size = "3vw" color = "white">홈</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/menulist"><font size = "3vw" color = "white">메뉴</font> </a>
+                </div>
+                <div class="item">
+                    <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/ordermanagement"><font size = "3vw" color = "white">주문 기록</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/supplyreport"><font size = "3vw" color = "white">납품 기록</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/ingredientmanagement"><font size = "3vw" color = "white">재고 관리</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="content">
+            <h1>주문 기록 관리 페이지</h1><br>
+            <form action="" method="post">
+                <div style="width: 800px; height:700px; overflow:scroll; margin-left:auto; margin-right:auto;">
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>결제 날짜</th>
+                                <th>결제 수단</th>
+                                <th>총 결제 금액</th>
+                                <th>고객 아이</th>
+                                <th>주문 번호</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (var i = 0; i < order_infos.length; i++) {%>
+                                <tr>
+                                    <td>
+                                        <%= order_infos[i].orderDate %>
+                                    </td>
+                                    <td>
+                                        <%= order_infos[i].paymentKind %>
+                                    </td>
+                                    <td>
+                                        <%= order_infos[i].totalMoney %>
+                                    </td>
+                                    <td>
+                                        <%= order_infos[i].user_uid %>
+                                    </td>
+                                    <td>
+                                        <a href="/ordermanagement/detail/<%= order_infos[i].orderID %>">
+                                            <%= order_infos[i].orderID %>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <%}%>
+                        </tbody>
+                    </table>
+                </div>
+            </form> 
+        </div>
+    </body>
+</html>

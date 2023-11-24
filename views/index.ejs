@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>커피전문점</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/detail.css' />
+  </head>
+  <body>
+    <div id="navbar">
+      <div class="wrap">
+        <div class="item_logo"></div>
+        <div class="item">
+          <a href="/"><font size = "3vw" color = "white">홈</font> </a>
+        </div>
+        <div class="item">
+          <a href="/menulist"><font size = "3vw" color = "white">메뉴</font> </a>
+        </div>
+        <% if (signinStatus == "관리자") {%>
+          <div class="item">
+            <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+          </div>
+          <div class="item">
+            <a href="/ordermanagement"><font size = "3vw" color = "white">주문 기록</font> </a>
+          </div>
+          <div class="item">
+            <a href="/supplyreport"><font size = "3vw" color = "white">납품 기록</font> </a>
+          </div>
+          <div class="item">
+            <a href="/ingredientmanagement"><font size = "3vw" color = "white">재고 관리</font> </a>
+          </div>
+          <div class="item">
+            <a href="/bestmenu"><font size = "3vw" color = "white">메뉴 통계</font> </a>
+          </div>
+          <div class="item">
+            <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+          </div>
+        <%} else if (signinStatus){%>
+          <div class="item">
+            <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+          </div>
+          <div class="item">
+            <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+          </div>
+        <%} else {%>
+          <div class="item">
+            <a href="/signin"><font size = "3vw" color = "white">로그인</font> </a>
+          </div>
+        <%}%>
+      </div>
+    </div>
+
+    <div id="content">
+      <h1>커피전문점 개발 시 메인이 될 화면</h1><br>
+      <h3>베스트 메뉴</h3>
+      <table border="1">
+        <thead>
+            <th>등수</th>
+            <th>메뉴명</th>
+            <th>가격</th>
+            <th>팔린 횟수</th>
+        </thead>
+        <tbody>
+            <% for (var i = 0; i < 2; i++) {%>
+                <tr> 
+                    <td>
+                        <%= i + 1 %>등 
+                    </td>
+                    <td>
+                        <%= menu_infos[count_lists[i].menu_menuID - 1].menuName %>
+                    </td>
+                    <td>
+                        <%= menu_infos[count_lists[i].menu_menuID - 1].menuPrice %>
+                    </td>
+                    <td>
+                        <%= count_lists[i].TotalOrderQuantity %>
+                    </td>
+                </tr>
+            <%}%>
+        </tbody>
+    </table> <br>
+      </div>
+  </body>
+</html>

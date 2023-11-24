@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>커피전문점</title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <link rel='stylesheet' href='/stylesheets/detail.css' />
+    </head>
+    <body>
+        <div id="navbar">
+            <div class="wrap">
+                <div class="item_logo"></div>
+                <div class="item">
+                    <a href="/"><font size = "3vw" color = "white">홈</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/menulist"><font size = "3vw" color = "white">메뉴</font> </a>
+                </div>
+                <% if (signinStatus == "관리자") {%>
+                    <div class="item">
+                        <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+                    </div>
+                    <div class="item">
+                        <a href="/ordermanagement"><font size = "3vw" color = "white">주문 기록</font> </a>
+                    </div>
+                    <div class="item">
+                        <a href="/supplyreport"><font size = "3vw" color = "white">납품 기록</font> </a>
+                    </div>
+                    <div class="item">
+                        <a href="/ingredientmanagement"><font size = "3vw" color = "white">재고 관리</font> </a>
+                    </div>
+                    <div class="item">
+                        <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+                    </div>
+                <%} else if (signinStatus){%>
+                    <div class="item">
+                        <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+                    </div>
+                    <div class="item">
+                        <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+                    </div>
+                <%}%>
+            </div>
+        </div>
+
+        <div id="content">
+            <h1>장바구니 페이지</h1><br>
+            <form action="" method="post">
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>메뉴명</th>
+                            <th>수량</th>
+                            <th>가격</th>
+                            <th>삭제 여부</th>
+                        </tr>
+                    </thead>
+                    <% for (var i=0; i < basket_infos.length; i++){ %>
+                        <form method="post">
+                            <tr>
+                                <td> 
+                                    <%= menu_infos[basket_infos[i].menu_menuID - 1].menuName %>
+                                </td>
+                                <td>
+                                    <%= basket_infos[i].basketQuantity %>                          
+                                </td>
+                                <td>
+                                    <%= menu_infos[basket_infos[i].menu_menuID - 1].menuPrice * basket_infos[i].basketQuantity %>
+                                </td>
+                                <td>
+                                    <button 
+                                        type="submit"
+                                        onclick="javascript: form.action='/basket/deleteBasket/<%= basket_infos[i].menu_menuID - 1 %>'">
+                                        삭제
+                                    </button>
+                                </td>
+                            </form>
+                        </tr>
+                    <%}%>
+                    </table><br>
+                <button type="submit">구매</button>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>커피전문점</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/detail.css' />
+</head>
+<body>
+    <div id="navbar">
+        <div class="wrap">
+            <div class="item_logo"></div>
+            <div class="item">
+                <a href="/"><font size = "3vw" color = "white">홈</font> </a>
+            </div>
+            <div class="item">
+                <a href="/menulist"><font size = "3vw" color = "white">메뉴</font> </a>
+            </div>
+            <% if (signinStatus == "관리자") {%>
+                <div class="item">
+                    <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/ordermanagement"><font size = "3vw" color = "white">주문 기록</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/supplyreport"><font size = "3vw" color = "white">납품 기록</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/ingredientmanagement"><font size = "3vw" color = "white">재고 관리</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+                </div>
+            <%} else if (signinStatus){%>
+                <div class="item">
+                    <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+                </div>
+            <%} else {%>
+                <div class="item">
+                    <a href="/signin"><font size = "3vw" color = "white">로그인</font> </a>
+                </div>
+            <%}%>
+        </div>
+    </div>
+    
+    <% if (basketStatus) {%>
+        <div id="content">
+            <h1>결제 완료 페이지</h1><br>
+            <p>
+                구매 날짜 : <%= order_infos[0].orderDate %>
+            </p>
+            <p>
+                구매 방법 : <%= order_infos[0].paymentKind %>
+            </p>
+            <p> 주문 번호 : <%= order_infos[0].orderID %></p>
+            
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th colspan="3">
+                            영수증
+                        </th>
+                    </tr>
+                </thead>
+                    <tr>
+                        <th>메뉴명</th>
+                        <th>수량</th>
+                        <th>가격</th>
+                    </tr>
+                <% for (var i=0; i < detail_infos.length; i++){ %>
+                    <tr>
+                        <td> 
+                            <%= menu_infos[detail_infos[i].menu_menuID - 1].menuName %>
+                        </td>
+                        <td>
+                            <%= detail_infos[i].orderQuantity %>                          
+                        </td>
+                        <td>
+                            <%= menu_infos[detail_infos[i].menu_menuID - 1].menuPrice * detail_infos[i].orderQuantity %>
+                        </td>
+                    </tr>
+                <%}%>
+                <tr>
+                    <td>
+                        <strong>총합계</strong>
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        <%= order_infos[0].totalMoney %>
+                    </td>
+                </tr>
+            </table><br>
+        </div>
+    <%} else {%>
+        <div id="content">
+            <h1>결제 완료 페이지</h1><br>
+            <p>
+                구매 날짜 : <%= result_infos[result_infos.length - 1].orderDate %>
+            </p>
+            <p>
+                구매 방법 : <%= result_infos[result_infos.length - 1].paymentKind %>
+            </p>
+            <p> 주문 번호 : <%= result_infos[result_infos.length - 1].orderID %></p>
+            
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th colspan="3">
+                            영수증
+                        </th>
+                    </tr>
+                </thead>
+                    <tr>
+                        <th>메뉴명</th>
+                        <th>수량</th>
+                        <th>가격</th>
+                    </tr>
+                    <tr>
+                        <td> 
+                            <%= menu_infos[detail_infos[detail_infos.length - 1].menu_menuID - 1].menuName %>
+                        </td>
+                        <td>
+                            <%= detail_infos[detail_infos.length - 1].orderQuantity %>                          
+                        </td>
+                        <td>
+                            <%= menu_infos[detail_infos[detail_infos.length - 1].menu_menuID - 1].menuPrice * detail_infos[detail_infos.length - 1].orderQuantity %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>총합계</strong>
+                        </td>
+                        <td>
+                            -
+                        </td>
+                        <td>
+                            <%= result_infos[result_infos.length - 1].totalMoney %>
+                        </td>
+                    </tr>
+            </table><br>
+        </div>
+    <%}%>
+    <form method="post">
+        <button
+            type="submit"
+            onclick="javascript: form.action='/result'">
+        메인으로
+        </button>
+    </form>
+
+</body>
+</html>

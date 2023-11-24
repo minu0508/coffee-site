@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>커피전문점</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/detail.css' />
+</head>
+<body>
+    <div id="navbar">
+        <div class="wrap">
+            <div class="item_logo"></div>
+            <div class="item">
+                <a href="/"><font size = "3vw" color = "white">홈</font> </a>
+            </div>
+            <div class="item">
+                <a href="/menulist"><font size = "3vw" color = "white">메뉴</font> </a>
+            </div>
+            <div class="item">
+                <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+            </div>
+            <div class="item">
+                <a href="/ordermanagement"><font size = "3vw" color = "white">주문 기록</font> </a>
+            </div>
+            <div class="item">
+                <a href="/supplyreport"><font size = "3vw" color = "white">납품 기록</font> </a>
+            </div>
+            <div class="item">
+                <a href="/bestmenu"><font size = "3vw" color = "white">메뉴 통계</font> </a>
+            </div>
+            <div class="item">
+                <a href="/ingredientmanagement"><font size = "3vw" color = "white">재고 관리</font> </a>
+            </div>
+            <div class="item">
+                <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="content">
+        <h1>재고 목록 페이지</h1>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>재료명</th>
+                    <th>보유량</th>
+                    <th>추가 구매</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (var i = 0; i < ingredient_infos.length; i++) {%>
+                    <form method="post">
+                        <tr>
+                            <td> 
+                                <%= ingredient_infos[i].ingredientName %>
+                            </td>
+                            <td> 
+                                <%= ingredient_infos[i].reserves %> 
+                            </td>
+                            <td>
+                                <input type="number" name="addQuantity" max="100" min="0" value="0" step="10">
+                                <button 
+                                    type="submit"
+                                    onclick="javascript: form.action='/ingredientmanagement/addIngredient/<%= ingredient_infos[i].ingredientName %>'">
+                                    추가구매
+                                </button>
+                            </td>
+                        </tr>
+                    </form>
+                <%}%>
+            </tbody>
+        </table>
+
+
+    </div>
+</body>
+</html>

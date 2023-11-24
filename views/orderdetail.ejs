@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>메뉴 페이지</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/detail.css' />
+</head>
+<body>
+    <div id="navbar">
+        <div class="wrap">
+            <div class="item_logo"></div>
+            <div class="item">
+                <a href="/"><font size = "3vw" color = "white">홈</font> </a>
+            </div>
+            <div class="item">
+                <a href="/menulist"><font size = "3vw" color = "white">메뉴</font> </a>
+            </div>
+            <div class="item">
+                <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+            </div>
+            <div class="item">
+                <a href="/ordermanagement"><font size = "3vw" color = "white">주문 기록</font> </a>
+            </div>
+            <div class="item">
+                <a href="/supplyreport"><font size = "3vw" color = "white">납품 기록</font> </a>
+            </div>
+            <div class="item">
+                <a href="/ingredientmanagement"><font size = "3vw" color = "white">재고 관리</font> </a>
+            </div>
+            <div class="item">
+                <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="content">
+        <h1>주문 상세 정보 페이지</h1><br>
+        <p>
+            <strong>
+                주문 번호 : 
+            </strong>
+            <%= orderid %>번
+        </p><br>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th> 메뉴명 </th>
+                    <th> 수량 </th>
+                    <th> 가격 </th>
+                    <th> 기능 </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (var i = 0; i < order_infos.length; i++) {%>
+                    <form method="post">
+                        <tr>
+                            <td>
+                                <%= menu_infos[order_infos[i].menu_menuID - 1].menuName %>
+                            </td>
+                            <td>
+                                <input type="number" name="Quantity" value="<%= order_infos[i].orderQuantity %>" max="<%= order_infos[i].orderQuantity %>" min="0">
+                            </td>
+                            <td>
+                                <%= menu_infos[order_infos[i].menu_menuID - 1].menuPrice * order_infos[i].orderQuantity %>
+                            </td>
+                            <td>
+                                <button 
+                                    type="submit"
+                                    onclick="javascript: form.action='/ordermanagement/cancel/<%= order_infos[i].order_orderID %>/<%= order_infos[i].menu_menuID%>'">
+                                    취소
+                                </button>
+                            </td>
+                        </tr>
+                    </form>
+                <%}%>
+            </tbody>
+        </table><br>
+        <form method="get">
+            <button 
+                type="submit"
+                onclick="javascript: form.action='/ordermanagement'">
+                목록으로
+            </button>
+        </form>
+    </div>
+</body>
+</html>

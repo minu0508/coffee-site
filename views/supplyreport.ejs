@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>커피전문점</title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <link rel='stylesheet' href='/stylesheets/detail.css' />
+    </head>
+    <body>
+        <div id="navbar">
+            <div class="wrap">
+                <div class="item_logo"></div>
+                <div class="item">
+                    <a href="/"><font size = "3vw" color = "white">홈</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/menulist"><font size = "3vw" color = "white">메뉴</font> </a>
+                </div>
+                <div class="item">
+                    <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/ordermanagement"><font size = "3vw" color = "white">주문 기록</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/supplyreport"><font size = "3vw" color = "white">납품 기록</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/ingredientmanagement"><font size = "3vw" color = "white">재고 관리</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="content">
+            <h1>납품 기록 관리 페이지</h1><br>
+            <form action="" method="post">
+                <div style="width: 800px; height:700px; overflow:scroll; margin-left:auto; margin-right:auto;">
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>납기 번호</th>
+                                <th>공급업체 ID</th>
+                                <th>주문 날짜</th>
+                                <th>주문 수량</th>
+                                <th>공급 품명</th>
+                                <th>주문 가격</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (var i = 0; i < supply_infos.length; i++) {%>
+                                <tr>
+                                    <td>
+                                        <%= supply_infos[i].deliveryID %>
+                                    </td>
+                                    <td>
+                                        <%= supply_infos[i].Supplier_supplierID %>
+                                    </td>
+                                    <td>
+                                        <%= supply_infos[i].deliveryDate %>
+                                    </td>
+                                    <td>
+                                        <%= supply_infos[i].deliveryQuantity %>
+                                    </td>
+                                    <td>
+                                        <%= supply_infos[i].ingredient_ingredientName %>
+                                    </td>
+                                    <td>
+                                        <%= supply_infos[i].deliveryPrice %>
+                                    </td>
+                                </tr>
+                            <%}%>
+                        </tbody>
+                    </table>
+                </div>
+            </form> 
+        </div>
+    </body>
+</html>

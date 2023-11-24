@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>메뉴 페이지</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/detail.css' />
+</head>
+<body>
+    <div id="navbar">
+        <div class="wrap">
+            <div class="item_logo"></div>
+            <div class="item">
+                <a href="/"><font size = "3vw" color = "white">홈</font> </a>
+            </div>
+            <div class="item">
+                <a href="/menulist"><font size = "3vw" color = "white">메뉴</font> </a>
+            </div>
+            <% if (signinStatus == "관리자") {%>
+                <div class="item">
+                    <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/ordermanagement"><font size = "3vw" color = "white">주문 기록</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/supplyreport"><font size = "3vw" color = "white">납품 기록</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/ingredientmanagement"><font size = "3vw" color = "white">재고 관리</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+                </div>
+            <%} else if (signinStatus){%>
+                <div class="item">
+                    <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+                </div>
+            <%} else {%>
+                <div class="item">
+                    <a href="/signin"><font size = "3vw" color = "white">로그인</font> </a>
+                </div>
+            <%}%>
+        </div>
+    </div>
+
+    <div id="content">
+        <h1>메뉴 상세정보</h1><br>
+        
+        <form method="get">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th> 메뉴명 </th>
+                        <th> 가격 </th>
+                        <th> 종류 </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <%= menu_infos.menuName %></a>
+                        </td>
+                        <td>
+                            <%= menu_infos.menuPrice %>
+                        </td>
+                        <td>
+                            <%= menu_infos.menuKind %>
+                        </td>
+                    </tr>
+                </tbody>
+            </table><br>
+            <button 
+                type="submit"
+                onclick="javescript: form.action='/menulist'">
+                메뉴 목록
+            </button>
+        </form>
+    </div>
+</body>
+</html>
