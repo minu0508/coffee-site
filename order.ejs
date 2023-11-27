@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>커피전문점</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/detail.css' />
+</head>
+<body>
+    <div id="navbar">
+        <div class="wrap">
+            <div class="item_logo"></div>
+            <div class="item">
+                <a href="/"><font size = "3vw" color = "white">홈</font> </a>
+            </div>
+            <div class="item">
+                <a href="/menulist"><font size = "3vw" color = "white">메뉴</font> </a>
+            </div>
+            <% if (signinStatus == "관리자") {%>
+                <div class="item">
+                    <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/ordermanagement"><font size = "3vw" color = "white">주문 기록</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/supplyreport"><font size = "3vw" color = "white">납품 기록</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/ingredientmanagement"><font size = "3vw" color = "white">재고 관리</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+                </div>
+            <%} else if (signinStatus){%>
+                <div class="item">
+                    <a a href="/basket"><font size = "3vw" color = "white">장바구니</font> </a>
+                </div>
+                <div class="item">
+                    <a href="/signin"><font size = "3vw" color = "white">로그아웃</font> </a>
+                </div>
+            <%} else {%>
+                <div class="item">
+                    <a href="/signin"><font size = "3vw" color = "white">로그인</font> </a>
+                </div>
+            <%}%>
+        </div>
+    </div>
+    <% if (basketStatus) {%>
+        <div id="content">
+            <h1>결제 페이지</h1> <br>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>메뉴명</th>
+                        <th>수량</th>
+                        <th>가격</th>
+                    </tr>
+                </thead>
+                <% for (var i=0; i < basket_infos.length; i++){ %>
+                    <form method="post">
+                        <tr>
+                            <td> 
+                                <%= menu_infos[basket_infos[i].menu_menuID - 1].menuName %>
+                            </td>
+                            <td>
+                                <%= basket_infos[i].basketQuantity %>                          
+                            </td>
+                            <td>
+                                <%= menu_infos[basket_infos[i].menu_menuID - 1].menuPrice * basket_infos[i].basketQuantity %>
+                            </td>
+                        </form>
+                    </tr>
+                <%}%>
+                <tr>
+                    <td> 
+                        <strong> 
+                            총가격
+                        </strong>
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        <strong>
+                            <%= totalMoney %>
+                        </strong>
+                    </td>
+                </tr>
+            </table><br>
+            <tr>
+                <form action="/order" method="post">
+                    <th scope="row">
+                        <select
+                            name="choice"
+                            id="card"
+                            onchange="showInputField(this.value)"
+                        >
+                            <option selected value="false">
+                                결제방식을 선택하시오.
+                            </option>
+                            <% for(var i=0; i < 3; i++) {%>
+                                <% if (i == 0) {%>
+                                    <option value="현금">
+                                        현금
+                                    </option>
+                                <%} else if (i == 1) {%>
+                                    <option value="카드">
+                                        카드
+                                    </option>
+                                <% } else if (i == 2){%>
+                                    <option value="수표">
+                                        수표
+                                    </option>
+                                <%}%>
+                            <%}%>
+                        </select>
+                    </th>
+                </tr>
+
+                <div id="inputField" style="display:none;">
+                    <br> 카드 번호 <br><input type="text" name="cardInput" id="cardInput" placeholder="카드 번호를 입력하세요.">
+                </div>
+                
+                <script>
+                    function showInputField(value) {
+                        var inputField = document.getElementById('inputField');
+                        var cardInput = document.getElementById('cardInput');
+                    
+                        if (value == '카드') {
+                            inputField.style.display = 'block';
+                            cardInput.setAttribute('name', 'cardInput');
+                        } else {
+                            inputField.style.display = 'none';
+                            cardInput.removeAttribute('name');
+                        }
+                    }
+                </script><br><br>
+                <button type="submit">구매</button>
+            </form>
+        </div>
+    <%} else {%>
+        <div id="content">
+
+            <h1>결제 페이지</h1> <br>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>메뉴명</th>
+                        <th>수량</th>
+                        <th>가격</th>
+                    </tr>
+                </thead>
+                <form method="post">
+                    <tr>
+                        <td> 
+                            <%= menu_infos.menuName %>
+                        </td>
+                        <td>
+                            <%= quantity %>                          
+                        </td>
+                        <td>
+                            <%= menu_infos.menuPrice * quantity %>
+                        </td>
+                    </tr>
+                </form>
+                <tr>
+                    <td>
+                        할인금액
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        <%= salePrice %>
+                    </td>
+                </tr>
+                <tr>
+                    <td> 
+                        <strong> 
+                            총가격
+                        </strong>
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        <strong>
+                            <%= totalMoney %>
+                        </strong>
+                    </td>
+                </tr>
+            </table><br>
+            <tr>
+                <form action="/order/direct" method="post">
+                    <th scope="row">
+                        <select
+                            name="choice"
+                            id="card"
+                            onchange="showInputField(this.value)"
+                        >
+                            <option selected value="false">
+                                결제방식을 선택하시오.
+                            </option>
+                            <% for(var i=0; i < 3; i++) {%>
+                                <% if (i == 0) {%>
+                                    <option value="현금">
+                                        현금
+                                    </option>
+                                <%} else if (i == 1) {%>
+                                    <option value="카드">
+                                        카드
+                                    </option>
+                                <% } else if (i == 2){%>
+                                    <option value="수표">
+                                        수표
+                                    </option>
+                                <%}%>
+                            <%}%>
+                        </select>
+                    </th>
+                    <div id="inputField" style="display:none;">
+                        <br> 카드 번호 <br><input type="text" name="cardInput" id="cardInput" placeholder="카드 번호를 입력하세요.">
+                    </div>
+                
+                    <script>
+                        function showInputField(value) {
+                            var inputField = document.getElementById('inputField');
+                            var cardInput = document.getElementById('cardInput');
+                        
+                            if (value == '카드') {
+                                inputField.style.display = 'block';
+                                cardInput.setAttribute('name', 'cardInput');
+                            } else {
+                                inputField.style.display = 'none';
+                                cardInput.removeAttribute('name');
+                            }
+                        }
+                    </script><br><br>
+                    <button type="submit">구매</button>
+                </form>
+            </tr>
+        </div>
+    <%}%>
+</body>
+</html>
