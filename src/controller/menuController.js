@@ -131,16 +131,34 @@ exports.directorder = async (req, res) => {
         )
         const order_id = orderid_info[0][0].orderID + 1;
 
+        const user_info = await pool.query(
+            "select relevant, grade from `user` where uid = ?",
+            [req.session.uid]
+        );
+
+        var totalMoney = menu_info[0][0].menuPrice * quantity;
+        var saleMoney = 0;
 
         if (req.session.uid){
+            if (user_info[0][0].grade == "BRONZE") {
+                totalMoney = menu_info[0][0].menuPrice * quantity
+                saleMoney = (menu_info[0][0].menuPrice * quantity) - (menu_info[0][0].menuPrice * quantity * 0.95);
+            } else if (user_info[0][0].grade == "SILVER") {
+                menu_info[0][0].menuPrice * quantity * 0.9;
+                saleMoney = (menu_info[0][0].menuPrice * quantity) - (menu_info[0][0].menuPrice * quantity * 0.9);
+            } else if (user_info[0][0].grade == "GOLD") {
+                totalMoney = menu_info[0][0].menuPrice * quantity * 0.8;
+                saleMoney = (menu_info[0][0].menuPrice * quantity) - (menu_info[0][0].menuPrice * quantity * 0.8);
+            };
+
             await pool.query(
-                'insert into `order` (totalMoney, user_uid, orderID) value (?, ?, ?)',
-                [menu_info[0][0].menuPrice * quantity, req.session.uid, order_id]
+                'insert into `order` (totalMoney, user_uid, orderID, saleMoney) value (?, ?, ?, ?)',
+                [totalMoney, req.session.uid, order_id, saleMoney]
             );
         } else {
             await pool.query(
-                'insert into `order` (totalMoney, user_uid, orderID) value (?, ?, ?)',
-                [menu_info[0][0].menuPrice * quantity, "비회원", order_id]
+                'insert into `order` (totalMoney, user_uid, orderID, saleMoney) value (?, ?, ?, ?)',
+                [menu_info[0][0].menuPrice * quantity, "비회원", order_id, saleMoney]
             );
         }
 
@@ -151,7 +169,12 @@ exports.directorder = async (req, res) => {
 
         await pool.query(
             'insert into `detail` (menu_menuID, order_orderID, orderQuantity, orderPrice) value (?, ?, ?, ?)',
-            [menu_id.menuID, order_info[0][order_info[0].length - 1].orderID, quantity, menu_info[0][0].menuPrice ]
+            [menu_id.menuID, order_info[0][order_info[0].length - 1].orderID, quantity, totalMoney - saleMoney ]
+        );
+        
+        await pool.query(
+            "update `user` set relevant = ? where uid = ?",
+            [user_info[0][0].relevant + totalMoney, req.session.uid]
         );
 
         return res.render("order",{
@@ -159,6 +182,8 @@ exports.directorder = async (req, res) => {
             quantity : quantity,
             basketStatus: false,
             signinStatus : req.session.uid,
+            salePrice : saleMoney,
+            totalMoney : totalMoney,
         });
     } catch (error) {
         console.log(error)

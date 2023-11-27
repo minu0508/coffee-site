@@ -162,11 +162,30 @@ exports.ordering = async (req, res) => {
         }
 
 
+        const user_info = await pool.query(
+            "select relevant, grade from `user` where uid = ?",
+            [req.session.uid]
+        );
+
+        var saleMoney = 0;
+
+        if (user_info[0][0].grade == "BRONZE") {
+            saleMoney = totalMoney - (totalMoney * 0.95);
+        } else if (user_info[0][0].grade == "SILVER") {
+            saleMoney = totalMoney - (totalMoney * 0.9);
+        } else if (user_info[0][0].grade == "GOLD") {
+            saleMoney = totalMoney - (totalMoney * 0.8);
+        };
+
+        await pool.query(
+            "update `user` set relevant = ? where uid = ?",
+            [user_info[0][0].relevant + totalMoney, req.session.uid]
+        );
 
         // order 테이블에 속성에 대한 모든 정보를 입력
         await pool.query(
-            "insert into `order` (orderDate, paymentKind, totalMoney, user_uid, orderID) values (?, ?, ?, ?, ?)",
-            [makeDate, choice, totalMoney, req.session.uid, order_id]
+            "insert into `order` (orderDate, paymentKind, totalMoney, user_uid, orderID, saleMoney) values (?, ?, ?, ?, ?, ?)",
+            [makeDate, choice, totalMoney - saleMoney, req.session.uid, order_id, saleMoney]
         );
 
 
@@ -210,7 +229,7 @@ exports.ordering = async (req, res) => {
         
         // orderID에 해당하는 것들 order 테이블에서 검색
         const order_info = await pool.query(
-            'select orderDate, paymentKind, orderID, totalMoney from `order` where orderID = ?',
+            'select orderDate, paymentKind, orderID, totalMoney, saleMoney from `order` where orderID = ?',
             [result_info[0][result_info[0].length - 1].orderID]
         );
 
@@ -243,6 +262,7 @@ exports.ordering = async (req, res) => {
             order_infos : order_info[0], 
             basketStatus: true,
             signinStatus : req.session.uid,
+            saleMoney : saleMoney,
         });
     } catch (error) {
         console.log(error);
